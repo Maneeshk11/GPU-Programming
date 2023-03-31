@@ -1,0 +1,1 @@
+## This program is to find the frequency of occurrance of elements in an array. The array is initialsed with numbers between 0 to 100 and the frequency array is returned which contains the frequency of each number.
