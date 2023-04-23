@@ -5,13 +5,14 @@
 
 int *Arr, *ker, *ans;
 int *d_Arr, *d_ker, *d_ans;
+int masked_Device;
 
 __global__ void findUsingGPUs(int *d_arr, int *d_ker, int n, int m, int *d_ans) {	
 	int tid = blockDim.x * blockIdx.x + threadIdx.x;
-    int maskedLength = m/2; // mid point of the kernel array
+    // int masked_Device = m/2;
     int k = blockDim.x * gridDim.x;
     int i = tid;
-    int start = i - maskedLength;
+    int start = i - masked_Device;
     while (i < n) {
         for (int j=0;j<m;j++) {
             if (start >= 0 && start<n) {
@@ -62,7 +63,9 @@ int main(int argc, char* argv[]) {
     cudaMemcpy(d_ker, ker, sizeof(int)*m, cudaMemcpyHostToDevice);
 
     // int total = blocks * threads;
-    // int maskedLength = m/2;
+    int maskedLength = m/2;
+    cudaMemcpyToSymbol(masked_Device, &maskedLength, sizeof(maskedLength));
+
 
     findUsingGPUs<<<blocks, threads>>>(d_Arr, d_ker, n, m, d_ans);
     cudaDeviceSynchronize();
