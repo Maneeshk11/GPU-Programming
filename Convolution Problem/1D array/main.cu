@@ -48,10 +48,14 @@ int main(int argc, char* argv[]) {
     }
     int last = m-1;
     while (number > 0) {
-        ker[i] = number%2;
+        ker[last] = number%2;
         last--;
         number/=2;
     }
+    for (int i = 0; i < m; i++) {
+        printf("%d", ker[i]);
+    }
+    printf("\n");
 
     cudaMalloc((void **)&d_Arr, sizeof(int)*n);
     cudaMalloc((void **)&d_ans, sizeof(int)*n);
@@ -69,7 +73,7 @@ int main(int argc, char* argv[]) {
 
     cudaMemcpy(ans, d_ans, sizeof(int)*n, cudaMemcpyDeviceToHost);
 
-    // for (int i = 0; i < n; i++) {
-    //     printf("%d ", ans[i]);
-    // }
+    for (int i = 0; i < n; i++) {
+        printf("%d ", ans[i]);
+    }
 }
